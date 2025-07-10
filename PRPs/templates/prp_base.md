@@ -2,9 +2,11 @@ name: "Base PRP Template v2 - Context-Rich with Validation Loops"
 description: |
 
 ## Purpose
+
 Template optimized for AI agents to implement features with sufficient context and self-validation capabilities to achieve working code through iterative refinement.
 
 ## Core Principles
+
 1. **Context is King**: Include ALL necessary documentation, examples, and caveats
 2. **Validation Loops**: Provide executable tests/lints the AI can run and fix
 3. **Information Dense**: Use keywords and patterns from the codebase
@@ -14,22 +16,27 @@ Template optimized for AI agents to implement features with sufficient context a
 ---
 
 ## Goal
+
 [What needs to be built - be specific about the end state and desires]
 
 ## Why
+
 - [Business value and user impact]
 - [Integration with existing features]
 - [Problems this solves and for whom]
 
 ## What
+
 [User-visible behavior and technical requirements]
 
 ### Success Criteria
+
 - [ ] [Specific measurable outcomes]
 
 ## All Needed Context
 
 ### Documentation & References (list all context needed to implement the feature)
+
 ```yaml
 # MUST READ - Include these in your context window
 - url: [Official API docs URL]
@@ -48,16 +55,19 @@ Template optimized for AI agents to implement features with sufficient context a
 ```
 
 ### Current Codebase tree (run `tree` in the root of the project) to get an overview of the codebase
+
 ```bash
 
 ```
 
 ### Desired Codebase tree with files to be added and responsibility of file
+
 ```bash
 
 ```
 
 ### Known Gotchas of our codebase & Library Quirks
+
 ```python
 # CRITICAL: [Library name] requires [specific setup]
 # Example: FastAPI requires async functions for endpoints
@@ -70,6 +80,7 @@ Template optimized for AI agents to implement features with sufficient context a
 ### Data models and structure
 
 Create the core data models, we ensure type safety and consistency.
+
 ```python
 Examples: 
  - orm models
@@ -102,6 +113,7 @@ Task N:
 
 
 ### Per task pseudocode as needed added to each task
+
 ```python
 
 # Task 1
@@ -126,6 +138,7 @@ async def new_feature(param: str) -> Result:
 ```
 
 ### Integration Points
+
 ```yaml
 DATABASE:
   - migration: "Add column 'feature_enabled' to users table"
@@ -143,6 +156,7 @@ ROUTES:
 ## Validation Loop
 
 ### Level 1: Syntax & Style
+
 ```bash
 # Run these FIRST - fix any errors before proceeding
 ruff check src/new_feature.py --fix  # Auto-fix what's possible
@@ -152,6 +166,7 @@ mypy src/new_feature.py              # Type checking
 ```
 
 ### Level 2: Unit Tests each new feature/file/function use existing test patterns
+
 ```python
 # CREATE test_new_feature.py with these test cases:
 def test_happy_path():
@@ -179,6 +194,7 @@ uv run pytest test_new_feature.py -v
 ```
 
 ### Level 3: Integration Test
+
 ```bash
 # Start the service
 uv run python -m src.main --dev
@@ -193,6 +209,7 @@ curl -X POST http://localhost:8000/feature \
 ```
 
 ## Final validation Checklist
+
 - [ ] All tests pass: `uv run pytest tests/ -v`
 - [ ] No linting errors: `uv run ruff check src/`
 - [ ] No type errors: `uv run mypy src/`
@@ -204,6 +221,7 @@ curl -X POST http://localhost:8000/feature \
 ---
 
 ## Anti-Patterns to Avoid
+
 - ❌ Don't create new patterns when existing ones work
 - ❌ Don't skip validation because "it should work"  
 - ❌ Don't ignore failing tests - fix them

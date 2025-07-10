@@ -1,5 +1,6 @@
-name: "Multi-Agent System: Research Agent with Email Draft Sub-Agent"
-description: |
+# Multi-Agent System: Research Agent with Email Draft Sub-Agent
+
+*Generated from INITIAL.md using the OpenCode Context Engineering template*
 
 ## Purpose
 Build a Pydantic AI multi-agent system where a primary Research Agent uses Brave Search API and has an Email Draft Agent (using Gmail API) as a tool. This demonstrates agent-as-tool pattern with external API integrations.
@@ -37,35 +38,34 @@ A CLI-based application where:
 ## All Needed Context
 
 ### Documentation & References
-```yaml
-# MUST READ - Include these in your context window
-- url: https://ai.pydantic.dev/agents/
-  why: Core agent creation patterns
-  
-- url: https://ai.pydantic.dev/multi-agent-applications/
-  why: Multi-agent system patterns, especially agent-as-tool
-  
-- url: https://developers.google.com/gmail/api/guides/sending
-  why: Gmail API authentication and draft creation
-  
-- url: https://api-dashboard.search.brave.com/app/documentation
-  why: Brave Search API REST endpoints
-  
-- file: examples/agent/agent.py
-  why: Pattern for agent creation, tool registration, dependencies
-  
-- file: examples/agent/providers.py
-  why: Multi-provider LLM configuration pattern
-  
-- file: examples/cli.py
-  why: CLI structure with streaming responses and tool visibility
+**MUST READ - Include these in your context window**
 
-- url: https://github.com/googleworkspace/python-samples/blob/main/gmail/snippet/send%20mail/create_draft.py
-  why: Official Gmail draft creation example
+- **url**: https://ai.pydantic.dev/agents/
+  **why**: Core agent creation patterns
+  
+- **url**: https://ai.pydantic.dev/multi-agent-applications/
+  **why**: Multi-agent system patterns, especially agent-as-tool
+  
+- **url**: https://developers.google.com/gmail/api/guides/sending
+  **why**: Gmail API authentication and draft creation
+  
+- **url**: https://api-dashboard.search.brave.com/app/documentation
+  **why**: Brave Search API REST endpoints
+  
+- **file**: examples/agent/agent.py
+  **why**: Pattern for agent creation, tool registration, dependencies
+  
+- **file**: examples/agent/providers.py
+  **why**: Multi-provider LLM configuration pattern
+  
+- **file**: examples/cli.py
+  **why**: CLI structure with streaming responses and tool visibility
+
+- **url**: https://github.com/googleworkspace/python-samples/blob/main/gmail/snippet/send%20mail/create_draft.py
+  **why**: Official Gmail draft creation example
+
+### Current Codebase Structure
 ```
-
-### Current Codebase tree
-```bash
 .
 ├── examples/
 │   ├── agent/
@@ -76,13 +76,13 @@ A CLI-based application where:
 ├── PRPs/
 │   └── templates/
 │       └── prp_base.md
+├── AGENTS.md
 ├── INITIAL.md
-├── CLAUDE.md
 └── requirements.txt
 ```
 
-### Desired Codebase tree with files to be added
-```bash
+### Target Codebase Structure
+```
 .
 ├── agents/
 │   ├── __init__.py               # Package init
@@ -124,7 +124,7 @@ A CLI-based application where:
 
 ## Implementation Blueprint
 
-### Data models and structure
+### Data Models and Structure
 
 ```python
 # models.py - Core data structures
@@ -156,70 +156,68 @@ class ResearchEmailRequest(BaseModel):
     recipient_email: str
 ```
 
-### List of tasks to be completed
+### Implementation Tasks (In Order)
 
-```yaml
-Task 1: Setup Configuration and Environment
-CREATE config/settings.py:
+**Task 1: Setup Configuration and Environment**
+- CREATE config/settings.py:
   - PATTERN: Use pydantic-settings like examples use os.getenv
   - Load environment variables with defaults
   - Validate required API keys present
 
-CREATE .env.example:
+- CREATE .env.example:
   - Include all required environment variables with descriptions
   - Follow pattern from examples/README.md
 
-Task 2: Implement Brave Search Tool
-CREATE tools/brave_search.py:
+**Task 2: Implement Brave Search Tool**
+- CREATE tools/brave_search.py:
   - PATTERN: Async functions like examples/agent/tools.py
   - Simple REST client using httpx (already in requirements)
   - Handle rate limits and errors gracefully
   - Return structured BraveSearchResult models
 
-Task 3: Implement Gmail Tool
-CREATE tools/gmail_tool.py:
+**Task 3: Implement Gmail Tool**
+- CREATE tools/gmail_tool.py:
   - PATTERN: Follow OAuth2 flow from Gmail quickstart
   - Store token.json in credentials/ directory
   - Create draft with proper MIME encoding
   - Handle authentication refresh automatically
 
-Task 4: Create Email Draft Agent
-CREATE agents/email_agent.py:
+**Task 4: Create Email Draft Agent**
+- CREATE agents/email_agent.py:
   - PATTERN: Follow examples/agent/agent.py structure
   - Use Agent with deps_type pattern
   - Register gmail_tool as @agent.tool
   - Return EmailDraft model
 
-Task 5: Create Research Agent
-CREATE agents/research_agent.py:
+**Task 5: Create Research Agent**
+- CREATE agents/research_agent.py:
   - PATTERN: Multi-agent pattern from Pydantic AI docs
   - Register brave_search as tool
   - Register email_agent.run() as tool
   - Use RunContext for dependency injection
 
-Task 6: Implement CLI Interface
-CREATE cli.py:
+**Task 6: Implement CLI Interface**
+- CREATE cli.py:
   - PATTERN: Follow examples/cli.py streaming pattern
   - Color-coded output with tool visibility
   - Handle async properly with asyncio.run()
   - Session management for conversation context
 
-Task 7: Add Comprehensive Tests
-CREATE tests/:
+**Task 7: Add Comprehensive Tests**
+- CREATE tests/:
   - PATTERN: Mirror examples test structure
   - Mock external API calls
   - Test happy path, edge cases, errors
   - Ensure 80%+ coverage
 
-Task 8: Create Documentation
-CREATE README.md:
+**Task 8: Create Documentation**
+- CREATE README.md:
   - PATTERN: Follow examples/README.md structure
   - Include setup, installation, usage
   - API key configuration steps
   - Architecture diagram
-```
 
-### Per task pseudocode
+### Key Implementation Patterns
 
 ```python
 # Task 2: Brave Search Tool
@@ -264,34 +262,32 @@ async def create_email_draft(
     return f"Draft created with ID: {result.data}"
 ```
 
-### Integration Points
-```yaml
-ENVIRONMENT:
-  - add to: .env
-  - vars: |
-      # LLM Configuration
-      LLM_PROVIDER=openai
-      LLM_API_KEY=sk-...
-      LLM_MODEL=gpt-4
-      
-      # Brave Search
-      BRAVE_API_KEY=BSA...
-      
-      # Gmail (path to credentials.json)
-      GMAIL_CREDENTIALS_PATH=./credentials/credentials.json
-      
-CONFIG:
-  - Gmail OAuth: First run opens browser for authorization
-  - Token storage: ./credentials/token.json (auto-created)
-  
-DEPENDENCIES:
-  - Update requirements.txt with:
-    - google-api-python-client
-    - google-auth-httplib2
-    - google-auth-oauthlib
+### Environment Configuration
+
+```bash
+# .env - Environment variables
+# LLM Configuration
+LLM_PROVIDER=openai
+LLM_API_KEY=sk-...
+LLM_MODEL=gpt-4
+
+# Brave Search
+BRAVE_API_KEY=BSA...
+
+# Gmail (path to credentials.json)
+GMAIL_CREDENTIALS_PATH=./credentials/credentials.json
 ```
 
-## Validation Loop
+**Configuration Notes**:
+- Gmail OAuth: First run opens browser for authorization
+- Token storage: ./credentials/token.json (auto-created)
+
+**Dependencies** (Update requirements.txt):
+- google-api-python-client
+- google-auth-httplib2
+- google-auth-oauthlib
+
+## Validation Gates
 
 ### Level 1: Syntax & Style
 ```bash
