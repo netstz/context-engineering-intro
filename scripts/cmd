@@ -1,0 +1,9 @@
+#!/bin/bash
+# OpenCode Context Engineering Command Runner (Linux/macOS)
+# This script provides a cross-platform way to execute Context Engineering commands
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Execute the Python script with all arguments passed through
+python3 "$SCRIPT_DIR/cmd.py" "$@"
